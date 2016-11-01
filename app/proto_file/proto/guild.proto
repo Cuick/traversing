@@ -1,0 +1,417 @@
+import "common.proto";
+import "stage.proto";
+
+// 获取公会排行列表 command：810
+message GetGuildRankRequest{
+    required int32 rank_type = 1;//1获取排行列表，2获取推荐列表
+    required int32 min_rank = 2;
+    required int32 max_rank = 3;
+}
+
+// 获取公会排行列表 command：810
+message GetGuildRankResponse{
+    required CommonResponse res = 1;
+    repeated GuildRank guild_rank = 2;
+    optional int32 flag = 3;  //有没有军团 默认1 无军团1  满0
+}
+
+message GuildRank
+{
+    required int32 g_id = 1;    //id
+    required int32 rank = 2;    //排名
+    required string name = 3;    //名
+    required int32 level = 4;   //等级
+    required string president = 5;   //会长
+    required int32 p_num = 6;   //人数
+    required int32 icon_id = 7;   //军团徽章
+    required string call = 8;   //公告
+    optional int32 be_apply = 9;   //有没有被我申请
+    optional int32 ysdt_level = 10;   //议事大厅等级
+}
+
+// 加入公会 command：802
+message JoinGuildRequest{
+	required int32 g_id = 1;  //公会id
+}
+
+message JoinGuildResponse{
+    required CommonResponse res = 1;
+    optional int32 spare_time = 4;
+}
+
+// 退出公会 command：803
+message ExitGuildResponse{
+    required CommonResponse res = 1;
+}
+
+// 创建公会 command：801
+message CreateGuildRequest{
+	required string name = 1;  //公会名
+	required int32 icon_id = 2;  //军团图标
+}
+
+// 创建公会 command：801
+message CreateGuildResponse{
+    required CommonResponse res = 1;
+}
+
+// 获取军团建设值，command 880
+message GetGuildContributionResponse{
+    required int32 contribution = 1;     //军团的建设值
+    required int32 all_contribution = 2;     //军团的累积建设值
+}
+
+// 获取公会信息 command：812
+message GetGuildInfoResponse{
+    required CommonResponse res = 1;
+
+    optional int32 g_id = 2;    //id
+    optional string name = 3;    //名
+    optional int32 member_num = 4;   //人数
+    optional int32 contribution = 5;     //军团的建设值
+    optional int32 all_contribution = 6;     //军团的建设值
+    optional string call = 7;    //公告
+    optional int32 icon_id = 8;   //军团徽章
+    optional int32 all_zan_num = 9;   // 军团今日已经赞的次数
+    optional int32 zan_money = 10;   // 军团今日已经赞的次数
+    optional int32 have_apply = 11;   //有没有加军团申请 0 or 1
+    repeated BuildInfo build_info = 12;
+
+    optional string captain_name = 13;   //团长name
+    optional int32 captain_level = 14;   //团长level
+    optional int32 captain_power = 15;   //团长战力
+    optional int32 captain_vip_level = 16;   //团长vip等级
+    optional int32 captain_icon = 17;   //团长头像
+
+    optional int32 zan_num = 18;   // 我今日已经赞的次数
+    optional int32 last_zan_time = 19;   // 最后赞时间
+    optional int32 position = 20;   //我的职位
+
+    optional int32 luck_num = 21;   //福运
+    repeated int32 bless_gift = 22;   //已经领取的祈福奖励
+    optional int32 bless_num = 23;   //祈福次数
+    optional int32 guild_bless_times = 24;   //军团祈福次数
+
+    optional int32 my_guild_rank = 25;
+    optional int32 my_contribution = 26;  //我的剩余贡献值
+    optional int32 my_all_contribution = 27;  //我的总贡献值
+    optional int32 my_day_contribution = 28;  //我的今日共贡献值
+    optional int32 be_mobai_times = 29;  // 被膜拜次数
+    repeated GuildSkill guild_skill = 30; //军团技能
+    optional int32 skill_point = 31; //军团技能点
+    optional int32 level = 32;   //等级
+    optional int32 captain_id = 33;   //团长id
+    optional int32 mobai_times = 34;   //膜拜次数
+}
+
+message BuildInfo{
+    required int32 build_type = 1;
+    required int32 build_level = 2;
+}
+
+message UpBuildRequest{
+    required int32 build_type = 1;
+}
+
+message UpBuildResponse{
+    required CommonResponse res = 1;
+}
+
+// 修改公告 command：804
+message EditorCallRequest{
+	required string call = 1;  //公告内容
+}
+
+// 修改公告 command：804
+message EditorCallResponse{
+    required CommonResponse res = 1;
+}
+
+
+// 获取申请列表 command：813
+message GetApplyListResponse{
+    required CommonResponse res = 1;
+    repeated ApplyUserInfo role_info = 2;
+}
+
+message ApplyUserInfo
+{
+    required int32 p_id = 1;    //id
+    required string name = 2;    //名
+    required int32 level = 3;   //等级
+    required int32 vip_level = 4;   //vip等级
+    required int32 fight_power = 5;   //战斗力
+    required int32 is_online = 6;  //是否在线，1在线，0不在线
+    optional int32 user_icon = 7;   //玩家头像
+}
+
+// 获取公会成员列表 command：811
+message GetGuildMemberListResponse{
+    required CommonResponse res = 1;
+    repeated RoleInfo role_info = 2;
+}
+
+message RoleInfo
+{
+    required int32 p_id = 1;    //id
+    required string name = 2;    //名
+    required int32 level = 3;   //等级
+    required int32 position = 4;   //职位
+    required int32 day_contribution = 5;   //今日的贡献
+    required int32 all_contribution = 10;   //今日的贡献
+    required int32 contribution = 6;   //剩余的贡献
+    required int32 fight_power = 7;   //战斗力
+    required int32 is_online = 8;  //是否在线，1在线，0不在线
+    optional int32 user_icon = 9;   //玩家头像
+    optional int32 vip_level = 16;   //vip等级
+    optional int32 be_mobai = 11;   //膜拜状态，我膜拜过为1 没膜拜过为0
+}
+
+// 转让军团 command：806 change_president_806
+message ChangePresidentRequest{
+    required int32 p_id = 1;  //目标玩家id
+}
+
+// 转让军团 command：806 change_president_806
+message ChangePresidentResponse{
+    required CommonResponse res = 1;
+}
+
+// 处理加会申请 command：805
+message DealApplyRequest{
+	repeated int32 p_ids = 1;  //申请玩家id
+	required int32 res_type = 2;  // 结果：1同意，2不同意,3清空
+}
+message DealApplyResponse{
+    required CommonResponse res = 1;
+    repeated int32 p_ids = 2;  //成功加入的玩家ID
+}
+
+// 踢出公会 command：807
+message KickRequest{
+	repeated int32 p_ids = 1;  //目标玩家ids
+}
+
+// 踢出公会 command：807
+message KickResponse{
+    required CommonResponse res = 1;
+}
+
+// 邀请加入军团command：1803
+message InviteJoinRequest{
+	required int32 user_id = 1;  //玩家id
+}
+
+// 邀请加入军团command：1803
+message InviteJoinResponse{
+    required CommonResponse res = 1;
+}
+
+// 处理 邀请加入军团command：1804
+message DealInviteJoinRequest{
+	required int32 res = 1;  //1 or 0 ，同意or 拒绝
+    optional int32 guild_id = 2;  //guild id
+    optional string mail_id = 3;
+}
+
+// 处理 邀请加入军团command：1804
+message DealInviteJoinResResponse{
+    required CommonResponse res = 1;
+    optional int32 spare_time = 2;
+}
+
+// 赞一下 1807
+message ZanResResponse{
+    required CommonResponse res = 1;
+    optional int32 all_zan_num = 2;   //今日赞数量
+    optional int32 zan_money = 3;   //可领取的钱
+    optional GameResourcesResponse gain = 4;
+    optional int32 last_zan_time = 5;
+}
+
+// 团长领取  1806
+message ReceiveResponse{
+    required CommonResponse res = 1;
+    optional GameResourcesResponse gain = 2;
+}
+
+// 祈福 command：809
+message BlessRequest{
+    required int32 bless_type = 1;
+}
+
+// 祈福 command：809
+message BlessResponse{
+    required CommonResponse res = 1;
+}
+
+// 领取祈福的奖励 command：1808
+message GetBlessGiftRequest{
+    required int32 gift_no = 1;
+}
+
+// 领取祈福的奖励 command：1808
+message GetBlessGiftResponse{
+    required CommonResponse res = 1;
+    optional GameResourcesResponse gain = 2;
+}
+
+// 1809
+message FindGuildRequest{
+    optional bytes id_or_name = 1;
+}
+
+// 1809
+message FindGuildResponse{
+    required CommonResponse res = 1;
+    optional GuildRank guild_info = 2;
+}
+
+// 1810
+message AppointRequest{
+    required int32 deal_type = 1; //1提拔2撤销
+    required int32 p_id = 2;
+}
+
+// 1810
+message AppointResponse{
+    required CommonResponse res = 1;
+}
+
+// 1815
+message PositionChange{
+    required int32 position = 1;
+}
+
+// 获取圣兽模块信息 command 2401
+message GuildBossInitResponse{
+    required CommonResponse res = 1;     // 
+    optional int32 trigger_times = 2;    // 军团已经召唤次数
+    optional GuildBoss guild_boss = 3;   // 圣兽信息
+    optional int32 last_attack_time = 4; // 我上次打的时间
+}
+
+//军团技能
+message GuildSkill{
+    required int32 skill_type = 1; //军团技能type
+    required int32 skill_level = 2;//军团技能等级
+}
+
+message GuildBoss{
+    optional int32 player_id = 1;    // 
+    optional string player_name = 2; // 
+    required int32 hp_left = 3;      // 当前血量
+    required int32 hp_max = 4;       // 最大血量
+    required int32 stage_id = 5;     // 关卡ID
+    required int32 trigger_time = 6; // 触发时间
+    required int32 boss_type = 7;    // boss类型
+}
+
+// 召唤圣兽command 2402
+message TriggerGuildBossRequest{
+    required int32 boss_type = 1;
+}
+
+// 召唤圣兽
+message TriggerGuildBossResponse{
+    required CommonResponse res = 1;
+    optional GuildBoss guild_boss = 2;
+    optional GameResourcesResponse consume = 3;
+}
+
+// 打圣兽command 2403
+message GuildBossBattleRequest{
+    required int32 stage_id = 1;   
+}
+
+// 打圣兽
+message GuildBossBattleResponse{
+    required CommonResponse res = 1;
+    repeated BattleUnit red = 2;         // 红方数据 自己
+    repeated BattleUnit blue = 3;        // 对方数据
+    optional GameResourcesResponse gain = 4;
+    optional bool fight_result= 5;             // 战斗结果
+    optional int32 guild_skill_point = 6;  //公会技能点
+    optional int32 seed1= 9;             // 随机种子1
+    optional int32 seed2= 10;            // 随机种子2
+}
+
+// 军团技能升级command 2404
+message UpGuildSkillRequest{
+    required int32 skill_type = 1;
+}
+
+// 军团技能升级
+message UpGuildSkillResponse{
+    required CommonResponse res = 1;
+    optional int32 guild_skill_point = 2; //公会技能点
+}
+
+// 膜拜
+message GuildMOBAIRequest{
+    required int32 u_id = 1;
+}
+
+// 膜拜
+message GuildMOBAIResponse{
+    required CommonResponse res = 1;
+    optional GameResourcesResponse gain = 2;
+}
+
+// 被膜拜奖励
+message ReceiveMOBAIResponse{
+    required CommonResponse res = 1;
+    optional GameResourcesResponse gain = 2;
+}
+
+// 秘境求助 873
+message MineSeekHelpRequest{
+    required int32 pos = 1;
+}
+
+// 秘境求助
+message MineSeekHelpResponse{
+    required CommonResponse res = 1;
+}
+
+// 秘境求助列表 874
+message MineSeekHelpListResponse{
+    required CommonResponse res = 1;
+    repeated MineSeekHelpInfo help_infos = 2;
+}
+
+message MineSeekHelpInfo{
+    required int32 p_id = 1;
+    required string name = 2;
+    optional int32 icon = 3;   //玩家头像
+    required int32 mine_id = 4;
+    required int32 seek_time = 5;
+    required int32 vip_level = 6;
+    required int32 level = 7;
+    required int32 be_help_times = 8;
+    required int32 position = 9;
+}
+
+// 秘境帮助 875
+message MineHelpRequest{
+    required int32 seek_time = 1;  // 0 all
+}
+
+// 秘境帮助
+message MineHelpResponse{
+    required CommonResponse res = 1;
+}
+
+message GuildDynamic{
+    required int32 type = 1;
+    required int32 time = 2;
+    optional string name1 = 3;
+    optional string name2 = 4;
+    optional int32 num1 = 5;
+}
+
+// 军团动态 876
+message GuildDynamicsResponse{
+    required CommonResponse res = 1;
+    repeated GuildDynamic dynamics = 2;
+}

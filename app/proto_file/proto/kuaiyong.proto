@@ -1,0 +1,31 @@
+import "common.proto";
+
+message KuaiyongFlowIdResponse{
+	optional string flow_id = 1;
+}
+
+message MeizuFlowIdRequest{
+	optional string recharge_info = 1;
+}
+
+message MeizuFlowIdResponse{
+	optional string flow_id = 1;
+	optional string sign = 2;
+}
+
+message VivoFlowIdRequest{
+	optional string rechargeid = 1;
+	optional string title = 2;
+	optional string desc = 3;
+}
+
+message VivoFlowIdResponse{
+	optional string transNo = 1;
+	optional string accessKey = 2;
+}
+
+message KuaiyongRechargeResponse{
+    required CommonResponse res = 1;
+    optional GameResourcesResponse gain = 2;
+    optional GetGoldResponse info = 3;
+}

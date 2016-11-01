@@ -1,0 +1,118 @@
+import "common.proto";
+
+//1855
+message GetActivityInfoRequese{
+    required int32 select_type = 1;  // 1 type 2 group
+    repeated int32 value = 2;
+}
+
+message GetActivityInfoResponse{
+    required CommonResponse res = 1;
+    repeated ActivityInfo info = 2;
+}
+
+message ActivityInfo{
+	optional int32 act_id = 1;
+	optional int32 state = 2;  // 状态  1不可领取  2已达成未领取 3已领取 0 未开启
+    optional int32 jindu = 3;
+	optional int32 accumulate_days = 4;
+	optional int32 recharge = 5;
+	optional int32 max_single_recharge = 6;
+}
+
+//1832
+message GetActGiftRequest{
+    required int32 act_id = 1;
+	optional int32 quantity = 2;
+}
+
+message GetActGiftResponse{
+    required CommonResponse res = 1;
+    optional GameResourcesResponse gain = 2;
+    optional GameResourcesResponse consume = 3;
+}
+
+
+
+
+//1831
+message GetActInfoRequese{
+    required int32 act_type = 1;
+}
+
+message GetActInfoResponse{
+    required CommonResponse res = 1;
+    repeated int32 received_act_ids = 2;
+    optional int32 times = 3;
+    optional int32 act_type = 4;
+}
+
+message FundActivityInfo{
+	optional int32 act_id = 1;
+	optional int32 state = 2;
+	optional int32 accumulate_days = 3;
+	optional int32 recharge = 4;
+	optional int32 max_single_recharge = 5;
+}
+
+message GetFundActivityResponse{
+	repeated FundActivityInfo info = 1;
+}
+
+// 2501 公会活动初始化信息
+message GuildActivityInitResponse{
+	repeated GuildActivityInfo acts = 1;
+}
+
+message GuildActivityInfo{
+	required int32 act_id = 1; //活动id
+	optional int32 act_times = 2; //活动次数
+	optional bool finished = 3; //是否已经领取
+}
+
+// 2502 获取活动奖励
+message GuildActivityGetRewardRequest{
+	required int32 act_id = 1; //活动id
+}
+message GuildActivityGetRewardResponse{
+	required CommonResponse res = 1; 
+    optional GameResourcesResponse gain = 2; //活动奖励
+}
+
+//累积活动 2601
+message AddActivityInitResponse{
+    repeated AddActivityInfo add_act_info = 1; 
+}
+
+//累积活动类型信息
+message AddActivityInfo{
+    required int32 act_type = 1; // 类型
+    repeated AddActivityDetailInfo detail_info = 2; // 详细信息
+}
+//累积活动详细信息
+message AddActivityDetailInfo{
+    required int32 res_type = 1; // 资源类型
+    required int32 num = 2;      // 当前数量
+    repeated AddActivityItem item = 3; //
+}
+
+//累积活动详细信息
+message AddActivityItem{
+    required int32 act_id = 1;   // 活动id
+    required bool finished = 2;  // 是否完成
+}
+
+//获取奖励 2602
+message AddActivityGetRewardRequest{
+	required int32 act_id = 1; //活动id
+}
+
+message AddActivityGetRewardResponse{
+	required CommonResponse res = 1; 
+    optional GameResourcesResponse gain = 2; //活动奖励
+}
+
+message FulfilActivity
+{
+    repeated int32 act_id = 1; //任务ID
+}
